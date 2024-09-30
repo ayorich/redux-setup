@@ -1,5 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { decrement, increment } from '../features/counter/counter-reducer';
+import {
+  addNumber,
+  decrement,
+  increment,
+} from '../features/counter/counter-reducer';
 
 export default function Home() {
   const count = useSelector((state) => state.counter.value);
@@ -19,6 +23,13 @@ export default function Home() {
         className="w-8 h-8 cursor-pointer border border-solid border-red-300 flex items-center text-base justify-center"
       >
         +
+      </button>
+
+      <button
+        onClick={() => dispatch(addNumber(40))}
+        className="w-8 h-8 cursor-pointer border border-solid border-red-300 flex items-center text-base justify-center"
+      >
+        +40
       </button>
     </div>
   );

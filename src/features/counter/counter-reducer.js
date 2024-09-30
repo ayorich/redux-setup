@@ -13,17 +13,23 @@ export const reducer = (state = initialState, { type, payload } = {}) => {
       const newValue = state.value - 1;
       return { ...state, value: newValue };
     }
+    case addNumber().type: {
+      const newValue = state.value + payload;
+      return { ...state, value: newValue };
+    }
     default: {
       return state;
     }
   }
 };
 
-export const increment = (payload) => ({
+export const increment = () => ({
   type: `${slice}/increment`,
-  payload,
 });
-export const decrement = (payload) => ({
+export const decrement = () => ({
   type: `${slice}/decrement`,
+});
+export const addNumber = (payload) => ({
+  type: `${slice}/addNumber`,
   payload,
 });
