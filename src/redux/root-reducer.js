@@ -1,6 +1,7 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import counterReducer, {
+import {
+  reducer as counterReducer,
   slice as counterSlice,
 } from '../features/counter/counter-reducer';
 

@@ -3,6 +3,7 @@ import { decrement, increment } from '../features/counter/counter-reducer';
 
 export default function Home() {
   const count = useSelector((state) => state.counter.value);
+  console.log(count);
   const dispatch = useDispatch();
   return (
     <div className="flex items-center justify-between w-1/4">
