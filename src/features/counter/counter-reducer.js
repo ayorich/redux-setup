@@ -33,3 +33,5 @@ export const addNumber = (payload) => ({
   type: `${slice}/addNumber`,
   payload,
 });
+
+export const selectCounterValue = (state) => state.counter.value;
