@@ -33,5 +33,8 @@ export const addNumber = (payload) => ({
   type: `${slice}/addNumber`,
   payload,
 });
+export const fetchNumber = () => ({
+  type: `${slice}/fetchNumber`,
+});
 
 export const selectCounterValue = (state) => state.counter.value;

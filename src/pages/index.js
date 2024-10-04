@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  addNumber,
   decrement,
+  fetchNumber,
   increment,
 } from '../features/counter/counter-reducer';
 
@@ -26,10 +26,10 @@ export default function Home() {
       </button>
 
       <button
-        onClick={() => dispatch(addNumber(40))}
+        onClick={() => dispatch(fetchNumber())}
         className="w-8 h-8 cursor-pointer border border-solid border-red-300 flex items-center text-base justify-center"
       >
-        +40
+        fetch number
       </button>
     </div>
   );
@@ -52,12 +52,12 @@ export default function Home() {
 // web socket
 // reading a file from disk
 
-const fs = require('fs');
-const readStream = fs.createReadStream('./largeFile.txt');
+// const fs = require('fs');
+// const readStream = fs.createReadStream('./largeFile.txt');
 
-readStream.on('data', (chunk) => {
-  console.log('data received', chunk.length);
-});
+// readStream.on('data', (chunk) => {
+//   console.log('data received', chunk.length);
+// });
 
 // ... on(end), on(error) etc.$
 
@@ -69,9 +69,9 @@ readStream.on('data', (chunk) => {
 // Eager: Eager means that data is evaluated immedietly, regardless of whether
 // the result is needed in that moment, or not. A push stream is eager.
 // Examples:
-const numbers = [1, 2, 3, 4, 5];
+// const numbers = [1, 2, 3, 4, 5];
 // .map method processes all elements in the array immediately.
-const squares = numbers.map((num) => num * num);
+// const squares = numbers.map((num) => num * num);
 
 // Lazy: lazy means that data is evaluated as needed with time. A pull stream is lazy.
 // What is lazy (synchronous) and NOT a generator.
