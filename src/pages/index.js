@@ -75,7 +75,7 @@ export default function Home() {
 
 // Lazy: lazy means that data is evaluated as needed with time. A pull stream is lazy.
 // What is lazy (synchronous) and NOT a generator.
-// Operand selector operators: || and &&.
+//`` Operand selector operators: || and &&``.
 // 2 || '2'
 
 // What is the difference between synchronous and asynchronous?
@@ -83,3 +83,96 @@ export default function Home() {
 // the next can begin. async/await
 // Asynchronous operations can overlap, so they do NOT have to wait for others
 // to complete before starting. .then()
+
+// What are the three building blocks of sagas?
+// 1. effects - action creators describe future actions meaning things that the app should do (/ effects)
+// 2. middleware - handles the effects and contains the logic that executes what the effects should do
+// 3. sagas (generator functions) - organize in what order and at which point in time what effect should be dispatched
+
+// Some common effects:
+// - put - dispatch actions
+// - call - can invoke functions
+// - take - pauses the saga until an action with a certain type is being dispatched
+// - select - takes in a selector to return a certain part of the state
+
+// import { call } from 'redux-saga/effects';
+
+// function foo() {
+//   return 'bar';
+// }
+
+// const effect = call(foo, ['a', 'b', 'c'], 'd');
+// console.log('effect');
+// { '@@redux-saga/io': true, type: 'CALL", payload: { fn: foo, args: [['a', 'b', 'c'] ,'d']}, combinator: false }
+
+// Create a saga called `pong` that everytime you dispatch a `ping` action,
+//  it dispatches a `pong` action and waits for the next `ping` action.
+const ping = () => ({ type: 'ping' });
+
+function* sagaPong() {
+  // yield takeEvery(ping().type)
+  // yield put(pong())
+  while (true) {
+    yield take(ping().type);
+    yield put(pong());
+  }
+}
+
+// takeEvery(sagaPong()); // { }
+function* rootSaga() {
+  yield all([sagaPong()]);
+}
+
+// store.ts
+const sagaMiddleware = createSagaMiddleware();
+sagaMiddleware.run(rootSaga);
+
+// Create a reducer together with a saga. The reducer should have a loading state
+// and the saga should fetch todos and then put them into the reducer.
+// And there should be two selectors for getting the loading state and getting
+// the todos once they're fetched.
+// https://jsonplaceholder.typicode.com/
+
+const slice = 'todo';
+const loadingAction = (state) => ({ type: `${slice}/loading`, payload: state });
+const successfullyFetchedTodos = (todos) => ({
+  type: `${slice}/successfullyFetchedTodos`,
+  payload: todos,
+});
+const currentLoading = (state) => state[slice].loading;
+const getTodos = (state) => state[slice].todos;
+
+const initState = {
+  loading: false,
+  todos: [],
+};
+const reducer = (state = initState, action = {}) => {
+  switch (action.type) {
+    case loadingAction().type: {
+      return {
+        ...state,
+        loading: action.payload,
+      };
+    }
+    case successfullyFetchedTodos().type: {
+      return {
+        ...state,
+        todos: action.payload,
+        loading: false,
+      };
+    }
+    default: {
+      return initState;
+    }
+  }
+};
+
+const fetchTodos = async () => {
+  const res = fetch('https://jsonplaceholder.typicode.com/');
+  return await res.json();
+};
+
+function* todoSaga() {
+  const todos = yield call(fetchTodos);
+  yield put(successfullyFetchedTodos(todos));
+}
